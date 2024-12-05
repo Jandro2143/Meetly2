@@ -1,0 +1,197 @@
+/* Main Layout Container */
+.layout-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #f4f6f8;
+}
+
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border-bottom: 2px solid #28a745;
+    padding: 15px 20px;
+    box-sizing: border-box;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Logo */
+.header-left {
+    flex: 0.2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.header-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #28a745;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: left;
+}
+
+/* Header Search */
+.header-center {
+    flex: 0.6;
+    display: flex;
+    justify-content: center;
+}
+
+.header-search {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.header-search:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
+}
+
+/* Header Profile */
+.header-right {
+    flex: 0.2;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #28a745;
+    object-fit: cover;
+}
+
+/* Main Content */
+.main-container {
+    display: flex;
+    width: 100%;
+    margin-top: 70px; /* Adjust for header height */
+    height: calc(100vh - 70px);
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: #ffffff; /* White background */
+    color: #333; /* Default text color */
+    border-right: 2px solid #28a745; /* Green border on the right */
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 70px; /* Below the header */
+    left: 0;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-family: 'Poppins', sans-serif; /* Modern font */
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Remove link underline and control color */
+.sidebar-menu li a {
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Inherit color from the parent li */
+    display: flex; /* Align icon and text */
+    align-items: center; /* Vertically align icon and text */
+    gap: 10px; /* Add spacing between icon and text */
+    font-size: 16px; /* Adjust text size */
+    transition: all 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Hover effect for links */
+.sidebar-menu li a:hover {
+    color: #28a745; /* Change text color on hover */
+}
+
+/* Active state for sidebar menu items */
+.sidebar-menu li.active a {
+    color: #fff; /* White text for active menu item */
+}
+
+/* Smooth hover effect for list items */
+.sidebar-menu li {
+    padding: 15px 20px;
+    border-radius: 25px; /* Rounded menu items */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out; /* Smooth transition */
+}
+
+.sidebar-menu li:hover {
+    background-color: #28a745; /* Green hover effect */
+    color: #fff; /* White text on hover */
+}
+
+/* Active State */
+.sidebar-menu li.active {
+    background-color: #28a745; /* Green background for active item */
+    color: #ffffff; /* White text for active item */
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+.sidebar-menu li.active i {
+    color: #ffffff; /* White icon for active item */
+}
+
+/* Add spacing between menu items */
+.sidebar-menu li:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+
+/* Content Area */
+.content-area {
+    flex: 1;
+    margin-left: 250px;
+    padding: 30px;
+    overflow-y: auto;
+    width: calc(100% - 250px);
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .header-search {
+        width: 100%;
+    }
+
+    .sidebar {
+        width: 200px;
+    }
+
+    .content-area {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+}
