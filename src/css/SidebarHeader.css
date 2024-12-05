@@ -129,7 +129,7 @@
 
 /* Hover effect for links */
 .sidebar-menu li a:hover {
-    color: #28a745; /* Change text color on hover */
+    color: #fff; /* Change text color on hover */
 }
 
 /* Active state for sidebar menu items */
