@@ -14,15 +14,18 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/appointments" element={<Appointments />} />
-        <Route path="/help" element={<Help />} />
-        <Route path="/messages" element={<Messages />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/reports" element={<Reports />} />
+        {/* Dynamic routes with :uniqueId */}
+        <Route path="/home/:uniqueId" element={<HomePage />} />
+        <Route path="/appointments/:uniqueId" element={<Appointments />} />
+        <Route path="/help/:uniqueId" element={<Help />} />
+        <Route path="/messages/:uniqueId" element={<Messages />} />
+        <Route path="/settings/:uniqueId" element={<Settings />} />
+        <Route path="/reports/:uniqueId" element={<Reports />} />
+        <Route path="/calendar/:uniqueId" element={<CalendarPage />} />
+
+        {/* Static routes */}
         <Route path="/sign_in" element={<SignIn />} />
         <Route path="/sign_up" element={<SignUp />} />
-        <Route path="/calendar" element={<CalendarPage />} />
       </Routes>
     </Router>
   );

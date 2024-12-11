@@ -1,4 +1,4 @@
-from pyairtable import Table
+from pyairtable import Api
 import uuid
 import json
 import sys
@@ -8,7 +8,8 @@ def get_airtable_table(table_name):
     """Retrieve the Airtable table using the Config class."""
     airtable_api_key = Config.AIRTABLE_API_KEY
     base_id = Config.BASE_ID
-    return Table(airtable_api_key, base_id, table_name)
+    api = Api(airtable_api_key)
+    return api.table(base_id, table_name)
 
 def create_user():
     """Function to handle user creation."""
@@ -83,18 +84,103 @@ def sign_in():
             print(json.dumps(response))
             return
 
-        # Success - you can include more user details here if needed
+        # Success - include the user's unique ID in the response
         response = {
             "message": "Sign-in successful!",
             "user": {
                 "first_name": user.get("First Name"),
                 "last_name": user.get("Last Name"),
                 "email": user.get("Email"),
+                "uniqueId": user.get("Unique ID"),  # Include the unique ID here
             }
         }
         print(json.dumps(response))
     except Exception as e:
         response = {"message": f"Error during sign-in: {str(e)}"}
+        print(json.dumps(response))
+
+def generate_api_key():
+    """Function to generate and save an API key for a user."""
+    try:
+        # Read the input from stdin (from Node.js)
+        input_data = sys.stdin.read()
+        data = json.loads(input_data)
+
+        # Validate required fields
+        if "userId" not in data:
+            response = {"message": "User ID is required"}
+            print(json.dumps(response))
+            return
+
+        user_id = data["userId"]
+
+        # Generate the API key
+        api_key = str(uuid.uuid4())
+
+        # Airtable table setup
+        table = get_airtable_table(Config.USERS_TABLE)
+
+        # Query Airtable for the user by unique ID
+        records = table.all(formula=f"{{Unique ID}} = '{user_id}'")
+
+        if not records:
+            response = {"message": "User not found"}
+            print(json.dumps(response))
+            return
+
+        # Update the user's API key
+        record_id = records[0]["id"]
+        table.update(record_id, {"API Key": api_key})
+
+        response = {
+            "message": "API key generated successfully!",
+            "apiKey": api_key
+        }
+        print(json.dumps(response))
+    except Exception as e:
+        response = {"message": f"Error generating API key: {str(e)}"}
+        print(json.dumps(response))
+
+def get_api_key():
+    """Fetch the API key for a specific user."""
+    try:
+        # Read input from stdin (from Node.js)
+        input_data = sys.stdin.read()
+        data = json.loads(input_data)
+
+        # Airtable table setup
+        table = get_airtable_table(Config.USERS_TABLE)
+
+        # Validate required fields
+        if "userId" not in data:
+            response = {"message": "User ID is required."}
+            print(json.dumps(response))
+            return
+
+        user_id = data["userId"]
+
+        # Query Airtable for the user by User ID
+        records = table.all(formula=f"{{Unique ID}} = '{user_id}'")
+
+        if not records:
+            response = {"message": "User not found."}
+            print(json.dumps(response))
+            return
+
+        user = records[0]["fields"]
+
+        # Check if the API key exists
+        api_key = user.get("API Key")
+        if not api_key:
+            response = {"message": "API Key not found for the user."}
+            print(json.dumps(response))
+            return
+
+        # Return the API key
+        response = {"apiKey": api_key}
+        print(json.dumps(response))
+    except Exception as e:
+        response = {"message": f"Error fetching API key: {str(e)}"}
         print(json.dumps(response))
 
 # Determine the function to execute based on the input from Node.js
@@ -105,5 +191,9 @@ if __name__ == "__main__":
             create_user()
         elif action == "sign_in":
             sign_in()
+        elif action == "generate_api_key":
+            generate_api_key()
+        elif action == "get_api_key":
+            get_api_key()  # New action
         else:
             print(json.dumps({"message": "Invalid action"}))

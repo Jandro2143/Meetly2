@@ -1,10 +1,20 @@
 import React from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useParams, useNavigate } from "react-router-dom";
 import "../../css/SidebarHeader.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const SidebarHeader = ({ title, userProfileImage, companyName, children }) => {
   const location = useLocation(); // Get the current location
+  const { uniqueId } = useParams(); // Extract the unique ID from the URL
+  const navigate = useNavigate(); // React Router's navigation hook
+
+  const handleLogout = () => {
+    // Clear session storage or any other data
+    sessionStorage.clear();
+
+    // Redirect to the sign-in page
+    navigate("/sign_in");
+  };
 
   return (
     <div className="layout-container">
@@ -34,39 +44,40 @@ const SidebarHeader = ({ title, userProfileImage, companyName, children }) => {
       <div className="main-container">
         <aside className="sidebar">
           <ul className="sidebar-menu">
-            <li className={location.pathname === "/home" ? "active" : ""}>
-              <Link to="/home">
+            <li className={location.pathname === `/home/${uniqueId}` ? "active" : ""}>
+              <Link to={`/home/${uniqueId}`}>
                 <i className="fas fa-home"></i> Home
               </Link>
             </li>
-            <li className={location.pathname === "/reports" ? "active" : ""}>
-              <Link to="/reports">
+            <li className={location.pathname === `/reports/${uniqueId}` ? "active" : ""}>
+              <Link to={`/reports/${uniqueId}`}>
                 <i className="fas fa-chart-line"></i> Reports
               </Link>
             </li>
-            <li
-              className={location.pathname === "/appointments" ? "active" : ""}
-            >
-              <Link to="/appointments">
+            <li className={location.pathname === `/appointments/${uniqueId}` ? "active" : ""}>
+              <Link to={`/appointments/${uniqueId}`}>
                 <i className="fas fa-calendar-alt"></i> Appointments
               </Link>
             </li>
-            <li className={location.pathname === "/messages" ? "active" : ""}>
-              <Link to="/messages">
+            <li className={location.pathname === `/messages/${uniqueId}` ? "active" : ""}>
+              <Link to={`/messages/${uniqueId}`}>
                 <i className="fas fa-envelope"></i> Messages
               </Link>
             </li>
-            <li className={location.pathname === "/settings" ? "active" : ""}>
-              <Link to="/settings">
+            <li className={location.pathname === `/settings/${uniqueId}` ? "active" : ""}>
+              <Link to={`/settings/${uniqueId}`}>
                 <i className="fas fa-cog"></i> Settings
               </Link>
             </li>
-            <li className={location.pathname === "/help" ? "active" : ""}>
-              <Link to="/help">
+            <li className={location.pathname === `/help/${uniqueId}` ? "active" : ""}>
+              <Link to={`/help/${uniqueId}`}>
                 <i className="fas fa-question-circle"></i> Help
               </Link>
             </li>
           </ul>
+          <button className="logout-button" onClick={handleLogout}>
+            <i className="fas fa-sign-out-alt"></i> Logout
+          </button>
         </aside>
         <div className="content-area">{children}</div>
       </div>

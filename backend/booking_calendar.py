@@ -13,7 +13,15 @@ def book():
     data = json.loads(input_data)
 
     # Check if all required fields are provided
-    required_fields = ("first_name", "last_name", "email", "phone_number", "date", "time")
+    required_fields = (
+        "first_name",
+        "last_name",
+        "email",
+        "phone_number",
+        "date",
+        "time",
+        "uniqueId"
+    )
     missing_fields = [field for field in required_fields if field not in data]
     if missing_fields:
         print(json.dumps({"error": f"Missing fields: {', '.join(missing_fields)}"}))
@@ -34,6 +42,7 @@ def book():
             "Date/time": utc_datetime.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
             "Number": data["phone_number"],
             "Email": data["email"],
+            "User ID": data["uniqueId"]  # Add the unique user ID
         }
 
         # Add the record to Airtable
